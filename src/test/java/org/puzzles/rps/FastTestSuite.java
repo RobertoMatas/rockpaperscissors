@@ -1,0 +1,22 @@
+package org.puzzles.rps;
+
+import org.junit.experimental.categories.Categories;
+import org.junit.experimental.categories.Categories.IncludeCategory;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
+import org.puzzles.rps.game.GameFactoryTest;
+import org.puzzles.rps.game.RockPaperScissorsGameRoundTest;
+import org.puzzles.rps.game.player.ComputerAITest;
+import org.puzzles.rps.game.player.HumanTest;
+import org.puzzles.rps.game.player.RandomMoveGeneratorTest;
+import org.puzzles.rps.game.rules.RockPaperScissorsMovesTest;
+import org.puzzles.rps.game.rules.RockPaperScissorsRulesTest;
+
+@RunWith(Categories.class)
+@IncludeCategory(FastTests.class)
+@SuiteClasses({ RockPaperScissorsGameRoundTest.class, GameFactoryTest.class,
+		RockPaperScissorsMovesTest.class, ComputerAITest.class,
+		HumanTest.class, RandomMoveGeneratorTest.class,
+		RockPaperScissorsRulesTest.class })
+public class FastTestSuite {
+}

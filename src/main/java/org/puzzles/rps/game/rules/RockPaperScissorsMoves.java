@@ -1,24 +1,26 @@
 package org.puzzles.rps.game.rules;
 
 public enum RockPaperScissorsMoves implements Move {
-	rock, paper, scissors;
+	rock {
+		public boolean wins(Move adversaryMove) {
+			return adversaryMove == scissors;
 
-	public boolean wins(Move adversaryMove) {
-		switch (this) {
-			case rock:
-				return adversaryMove == scissors;
-	
-			case paper:
-				return adversaryMove == rock;
-			
-			case scissors:
-				return adversaryMove == paper;
-				
-			default:
-				break;
 		}
-		return false;
-	}
+	},
+
+	paper {
+		public boolean wins(Move adversaryMove) {
+			return adversaryMove == rock;
+
+		}
+	},
+
+	scissors {
+		public boolean wins(Move adversaryMove) {
+			return adversaryMove == paper;
+
+		}
+	};
 
 	public String getName() {
 		return this.toString();

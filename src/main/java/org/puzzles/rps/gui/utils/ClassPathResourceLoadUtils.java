@@ -8,8 +8,11 @@ import javax.swing.ImageIcon;
 public class ClassPathResourceLoadUtils implements ResourceLoadUtils {
 
 	public Icon icon(String iconName) {
-		URL resource = getClass().getClassLoader().getResource(
-				iconName + ".png");
+		ClassLoader classLoader = getClass().getClassLoader();
+		URL resource = classLoader.getResource(iconName + ".png");
+		if (resource == null) {
+			resource = classLoader.getResource("no-icon.png");
+		}
 		return new ImageIcon(resource);
 	}
 

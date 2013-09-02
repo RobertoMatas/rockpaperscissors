@@ -5,7 +5,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.puzzles.rps.SlowTests;
-import org.puzzles.rps.game.rules.RulesFactoryImpl;
+import org.puzzles.rps.gui.components.fake.RulesFactoryFake;
 
 @Category(SlowTests.class)
 public class InputHumanMoveFunctionalTest extends
@@ -28,6 +28,6 @@ public class InputHumanMoveFunctionalTest extends
 	@Override
 	protected InputHumanMovePanel panelInstance() {
 		return new InputHumanMovePanel(controller,
-				new RulesFactoryImpl().createRulesOfGame());
+				new RulesFactoryFake().createRulesOfGame());
 	}
 }

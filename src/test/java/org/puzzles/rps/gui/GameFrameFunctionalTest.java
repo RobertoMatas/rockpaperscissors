@@ -21,10 +21,11 @@ import org.puzzles.rps.game.OutCome;
 import org.puzzles.rps.game.player.Player;
 import org.puzzles.rps.game.player.Players;
 import org.puzzles.rps.game.rules.Move;
-import org.puzzles.rps.game.rules.RockPaperScissorsMoves;
+import org.puzzles.rps.game.rules.Rules;
 import org.puzzles.rps.game.rules.RulesFactory;
-import org.puzzles.rps.game.rules.RulesFactoryImpl;
+import org.puzzles.rps.gui.GameFrame;
 import org.puzzles.rps.gui.components.GameOptionsPanel;
+import org.puzzles.rps.gui.components.fake.RulesFactoryFake;
 
 @Category(SlowTests.class)
 public class GameFrameFunctionalTest {
@@ -32,8 +33,10 @@ public class GameFrameFunctionalTest {
 	private FrameFixture window;
 
 	private GameFactory gameFactory;
-	
+
 	private RulesFactory rulesFactory;
+
+	private Rules rules;
 
 	private Game game;
 
@@ -57,16 +60,16 @@ public class GameFrameFunctionalTest {
 	}
 
 	private void inizializeMocks() {
-		this.gameFactory = mock(GameFactory.class);
-		this.rulesFactory = new RulesFactoryImpl();
-		this.game = mock(Game.class);
-		this.computer = mock(Player.class);
+		gameFactory = mock(GameFactory.class);
+		rulesFactory = new RulesFactoryFake();
+		rules = rulesFactory.createRulesOfGame();
+		game = mock(Game.class);
+		computer = mock(Player.class);
 		when(game.players()).thenReturn(new Players(computer, computer));
 		when(game.resolveGame()).thenReturn(OutCome.TIED);
-		when(computer.shoot()).thenReturn(RockPaperScissorsMoves.rock);
+		when(computer.shoot()).thenReturn(rules.getByName("rock"));
 		when(gameFactory.createComputerVsComputerGame()).thenReturn(game);
-		when(gameFactory.createHumanVsComputerGame(any(Move.class)))
-				.thenReturn(game);
+		when(gameFactory.createHumanVsComputerGame(any(Move.class))).thenReturn(game);
 	}
 
 	@Test
@@ -78,17 +81,15 @@ public class GameFrameFunctionalTest {
 	@Test
 	public void buildComputerVsComputerGameWhenUserSelectThisOption() {
 		window.menuItemWithPath("Game", "New").click();
-		window.panel("GameOptionsPanel")
-				.radioButton(GameOptionsPanel.ComputerVersusComputer).check();
-		
+		window.panel("GameOptionsPanel").radioButton(GameOptionsPanel.ComputerVersusComputer).check();
+
 		verify(gameFactory).createComputerVsComputerGame();
 	}
 
 	@Test
 	public void inputHumanMovePanelAppaersWhenUserSelectHumanVsComputerMode() {
 		window.menuItemWithPath("Game", "New").click();
-		window.panel("GameOptionsPanel")
-				.radioButton(GameOptionsPanel.HumanVsComputer).check();
+		window.panel("GameOptionsPanel").radioButton(GameOptionsPanel.HumanVsComputer).check();
 
 		window.panel("InputHumanMovePanel").requireVisible();
 	}
@@ -96,11 +97,10 @@ public class GameFrameFunctionalTest {
 	@Test
 	public void buildHumanVsComputerGameWhenUserInputAShoot() {
 		window.menuItemWithPath("Game", "New").click();
-		window.panel("GameOptionsPanel")
-				.radioButton(GameOptionsPanel.HumanVsComputer).check();
+		window.panel("GameOptionsPanel").radioButton(GameOptionsPanel.HumanVsComputer).check();
 		window.panel("InputHumanMovePanel").radioButton("rock").check();
 
-		verify(gameFactory).createHumanVsComputerGame(RockPaperScissorsMoves.rock);
+		verify(gameFactory).createHumanVsComputerGame(any(Move.class));
 	}
 
 	@After
